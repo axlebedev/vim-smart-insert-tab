@@ -1,4 +1,4 @@
-function! InsertNecessaryTabs()
+function! SmartInsertTab()
     let curLine = getline('.')
     let curIndent = cindent('.')
     let whitespaceLineRegex =  '\v^\s{0,'.(curIndent - 1).'}$'
@@ -12,6 +12,6 @@ function! InsertNecessaryTabs()
         startinsert!
     else
         " 'feedkeys' instead of 'normal' because we want to stay in insert mode
-        call feedkeys("a\<Tab>")
+        call feedkeys("a\<Tab>", 'n')
     endif
 endfunction
