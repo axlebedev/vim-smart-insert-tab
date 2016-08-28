@@ -1,0 +1,67 @@
+*vim-smart-insert-tab.txt*	For Vim 7.4	2016 August 29
+
+*smart-insert-tab*     Functionality for sublime-like <Tab> char inserting.
+
+Version: 0.1.0
+==============================================================================
+CONTENTS                                         *smart-insert-tab-contents*
+
+    Introduction ...................................|smart-insert-tab-intro|
+    Usage ..........................................|smart-insert-tab-usage|
+    Bugs ............................................|smart-insert-tab-bugs|
+    Contributing ...........................|smart-insert-tab-contributions|
+    Changelog ..................................|smart-insert-tab-changelog|
+    Credits ......................................|smart-insert-tab-credits|
+    License ......................................|smart-insert-tab-license|
+
+==============================================================================
+INTRODUCTION                                        *smart-insert-tab-intro*
+
+vim-smart-insert-tab eliminates the need to press <Tab> several times.
+
+By VIM's default: user has to press <Tab> several times to reach
+necessary indentation (or use `cc` of course).
+
+With this plugin, in insert mode: when user presses <Tab> at empty line
+(or line that consists of whitespace symbols), necessary number of tabs
+is inserted. User doesn't need leave insert mode, or tap <Tab> key.
+
+==============================================================================
+USAGE                                               *smart-insert-tab-usage*
+
+To make it work, map <Tab> key: >
+  inoremap <Tab> <Esc>:call SmartInsertTab()<CR>
+<
+To make it work correctly, don't forget about other plugins that use <Tab>.
+e.g. with neocomplete: >
+  inoremap <expr><TAB> pumvisible() ?
+    \ "\<C-n>" : "\<Esc>:call SmartInsertTab()\<cr>"
+<
+==============================================================================
+BUGS                                                 *smart-insert-tab-bugs*
+
+Known bugs go here.
+
+* Incorrect work when insert from visual-block mode
+
+==============================================================================
+CONTRIBUTIONS                               *smart-insert-tab-contributions*
+
+Contributions and pull requests are welcome.
+
+==============================================================================
+CHANGELOG                                       *smart-insert-tab-changelog*
+
+0.1.0 Basic functionality.
+
+==============================================================================
+CREDITS                                           *smart-insert-tab-credits*
+
+Copyright © 2016 Alex Lebedev. <alexey.broadcast@gmail.com>
+
+==============================================================================
+LICENSE                                           *smart-insert-tab-license*
+
+MIT License.
+
+ vim:tw=79:ts=8:ft=help:norl:
