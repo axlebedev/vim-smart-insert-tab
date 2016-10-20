@@ -1,17 +1,27 @@
 function! SmartInsertTab()
     let curLine = getline('.')
-    let curIndent = cindent('.')
-    let whitespaceLineRegex =  '\v^\s{0,'.(curIndent - 1).'}$'
+;
+    let curPos = col('.')
+    let lineBeforeCur = curLine[0:curPos - 1]
+    let lineAfterCur = curLine[curPos:]
 
-    if (match(curLine, whitespaceLineRegex) > -1)
-        " leave one character to make vim not clear whitespace line again...
-        normal! ccx
-        " ...ok, now we can remove it...
-        normal! x
-        " ...and start insert mode
-        startinsert!
+    " When insert-mode cursor stands between first and second char in line -
+    " curPos() equal '1' in both cases.
+    " OK, leave a bug...
+    if (curPos == 1)
+        let lineBeforeCur = ''
+        let lineAfterCur = curLine
+    endif
+
+    if (curPos <= indent('.') && indent('.') < cindent('.'))
+        " trim spaces at lineAfterCur begin
+        let lineAfterCur = lineAfterCur[match(lineAfterCur, '\v\S'):]
+        execute 'normal! cc'.lineAfterCur."\<esc>^"
+        startinsert
     else
-        " 'feedkeys' instead of 'normal' because we want to stay in insert mode
-        call feedkeys("a\<Tab>", 'n')
+        let insCmd = curPos == 1 ? 'i' : 'a'
+        execute "normal! ".insCmd."\<Tab>"
+        normal! l
+        startinsert
     endif
 endfunction
