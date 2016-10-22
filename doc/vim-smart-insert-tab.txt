@@ -1,4 +1,4 @@
-*vim-smart-insert-tab.txt*	For Vim 7.4	2016 August 29
+*vim-smart-insert-tab.txt*	For Vim 7.4	2016 October 22
 
 *smart-insert-tab*     Functionality for sublime-like <Tab> char inserting.
 
@@ -18,8 +18,9 @@ CONTENTS                                         *smart-insert-tab-contents*
 INTRODUCTION                                        *smart-insert-tab-intro*
 
 vim-smart-insert-tab eliminates the need to press <Tab> several times.
+
 By VIM's default: user has to press <Tab> several times to reach
-necessary indentation (or use `cc`).
+necessary indentation.
 
 With this plugin, in insert mode: when user presses <Tab> at empty line
 (or line that consists of whitespace symbols), necessary number of tabs
@@ -40,12 +41,9 @@ e.g. with neocomplete: >
 BUGS                                                 *smart-insert-tab-bugs*
 
 Known bugs go here.
+    [All bugs are closed, see changelog]
 
-* Incorrect undo-history:
-  every non-<Tab> symbol after <Tab> generates new undo entry
-* When we edit recently created line:
-  first <Tab> hit does nothing, second and other - ok
-* Bugged work from visual-block mode
+If you find any bugs - you're welcome to github issues.
 
 ==============================================================================
 CHANGELOG                                       *smart-insert-tab-changelog*
@@ -56,6 +54,9 @@ CHANGELOG                                       *smart-insert-tab-changelog*
 0.2.0: fixed bug with edit whitespace-only line, code refactored 
 0.2.1: fixed bug with undo-history:
        now not every <Tab> generates new undo block
+0.3.0: removed all funcs that are not permitted in Insert mode.
+       Undo history works perfectly.
+       Insert from visual-block works ok.
 
 ==============================================================================
 CONTRIBUTIONS                               *smart-insert-tab-contributions*
