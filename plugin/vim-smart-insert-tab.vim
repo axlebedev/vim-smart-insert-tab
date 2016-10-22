@@ -1,50 +1,53 @@
+" Hereinafter: 'Symbol' is read as 'non-whitespace symbol'
+if exists("g:loaded_vim_smart_insert_tab") || &cp || v:version < 700
+    finish
+endif
+let g:loaded_vim_smart_insert_tab = 1
+
 " cindent() doesn't work correctly always
-function! s:GetActualCIndent() 
-    normal! Ox
+function! s:GetActualCIndent()
+    let pos = col('.')
+    normal! ox
     let res = indent('.')
-    normal! dd
+    execute 'normal! "_ddk'
+    call cursor('.', pos)
     return res
 endfunction
 
-function! SmartInsertTab()
-    let curLine = getline('.')
-    let curPos = col('.')
-    let curIndent = indent('.')
-    let lineBeforeCur = curLine[0:curPos - 1]
-    let lineAfterCur = curLine[curPos:]
-
-    " When insert-mode cursor stands between first and second char in line -
-    " curPos() equal '1' in both cases.
-    " OK, leave a bug...
-    if (curPos == 1)
-        let lineBeforeCur = ''
-        let lineAfterCur = curLine
+function! s:GetCursorPosition()
+    " cursorPos equal 1 in following cases:
+    " - cursor stands at beginning of line
+    " - cursor stands between first and second char in line -
+    " - cursor stands on recently created line (with `cc` or `O`)
+    " OK, leave a bug with case 2...
+    let pos = col('.')
+    if (pos == 1)
+        let pos = 0
     endif
+    return pos
+endfunction
 
-    " indent an empty line
-    if (len(curLine) == 0) 
-        " leave one character to make vim not clear whitespace line again...
-        normal! ccx
-        " ...ok, now we can remove it...
-        normal! x
-        " ...and start insert mode
-        startinsert!
+function! SmartInsertTab()
+    let line = getline('.')
+    let neededIndent = s:GetActualCIndent()
+    let cursorPos = s:GetCursorPosition()
 
-    " indent a line with content, if cursor stays before content
-    elseif (curPos <= curIndent && curIndent < s:GetActualCIndent())
-        " trim spaces at lineAfterCur begin
-        let lineAfterCur = lineAfterCur[match(lineAfterCur, '\v\S'):]
-        execute 'normal! cc'.lineAfterCur."\<esc>^"
-        startinsert
+    let haveSymbolsBeforeCursor = 
+\       cursorPos != 0 && match(line[:cursorPos - 1], '\v\S') > -1
 
-    " simply insert tab
-    else
-        let insCmd = curPos <= curIndent ? 'i' : 'a'
+    if (cursorPos >= neededIndent || indent('.') >= neededIndent || haveSymbolsBeforeCursor)
+        let insCmd = cursorPos == 0 ? 'i' : 'a'
         execute "normal! ".insCmd."\<Tab>"
         normal! l
-        if (curPos < len(curLine))
+        execute 'startinsert'.(cursorPos == len(line) ? '!' : '')
+    else
+        let isWhitespaceLine = match(line, '\v\S') == -1
+        if (!isWhitespaceLine) " if not whitespace line
+            execute "normal! ==\<esc>^"
             startinsert
         else
+            let numOfTabs = neededIndent / &tabstop
+            execute "normal! \"_ddO\<esc>".numOfTabs."a\<Tab>"
             startinsert!
         endif
     endif

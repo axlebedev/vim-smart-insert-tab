@@ -18,7 +18,6 @@ CONTENTS                                         *smart-insert-tab-contents*
 INTRODUCTION                                        *smart-insert-tab-intro*
 
 vim-smart-insert-tab eliminates the need to press <Tab> several times.
-
 By VIM's default: user has to press <Tab> several times to reach
 necessary indentation (or use `cc`).
 
@@ -42,21 +41,23 @@ BUGS                                                 *smart-insert-tab-bugs*
 
 Known bugs go here.
 
-* <Tab> as last char of line
-* <Tab> in whitespace-only line
-* from visual-block mode
+* Incorrect undo-history: every <Tab> generates new entry
+* When we edit recently created line:
+  first <Tab> hit does nothing, second and other - ok
+* Bugged work from visual-block mode
+
+==============================================================================
+CHANGELOG                                       *smart-insert-tab-changelog*
+
+0.1.0: Basic functionality.
+0.1.1: fixed incorrect 'cindent()', fixed tabbing at empty line
+0.1.2: fixed insert tab at end of line
+0.2.0: fixed bug with edit whitespace-only line, code refactored 
 
 ==============================================================================
 CONTRIBUTIONS                               *smart-insert-tab-contributions*
 
 Contributions and pull requests are welcome.
-
-==============================================================================
-CHANGELOG                                       *smart-insert-tab-changelog*
-
-0.1.0 Basic functionality.
-0.1.1 fixed incorrect 'cindent()', fixed tabbing at empty line
-0.1.2 fixed insert tab at end of line
 
 ==============================================================================
 CREDITS                                           *smart-insert-tab-credits*
