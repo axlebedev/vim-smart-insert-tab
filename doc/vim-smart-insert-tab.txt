@@ -41,7 +41,8 @@ BUGS                                                 *smart-insert-tab-bugs*
 
 Known bugs go here.
 
-* Incorrect undo-history: every <Tab> generates new entry
+* Incorrect undo-history:
+  every non-<Tab> symbol after <Tab> generates new undo entry
 * When we edit recently created line:
   first <Tab> hit does nothing, second and other - ok
 * Bugged work from visual-block mode
@@ -53,6 +54,8 @@ CHANGELOG                                       *smart-insert-tab-changelog*
 0.1.1: fixed incorrect 'cindent()', fixed tabbing at empty line
 0.1.2: fixed insert tab at end of line
 0.2.0: fixed bug with edit whitespace-only line, code refactored 
+0.2.1: fixed bug with undo-history:
+       now not every <Tab> generates new undo block
 
 ==============================================================================
 CONTRIBUTIONS                               *smart-insert-tab-contributions*

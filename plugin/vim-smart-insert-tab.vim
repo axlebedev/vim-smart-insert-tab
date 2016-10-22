@@ -27,7 +27,19 @@ function! s:GetCursorPosition()
     return pos
 endfunction
 
+function! s:GetUndojoinStr() 
+    let undojoinStr = 'undojoin|'
+    try 
+        execute 'undojoin'
+    catch
+        let undojoinStr = ''
+    endtry
+    return undojoinStr
+endfunction
+
 function! SmartInsertTab()
+    echom 's:GetUndojoinStr()='.s:GetUndojoinStr()
+
     let line = getline('.')
     let neededIndent = s:GetActualCIndent()
     let cursorPos = s:GetCursorPosition()
@@ -37,17 +49,17 @@ function! SmartInsertTab()
 
     if (cursorPos >= neededIndent || indent('.') >= neededIndent || haveSymbolsBeforeCursor)
         let insCmd = cursorPos == 0 ? 'i' : 'a'
-        execute "normal! ".insCmd."\<Tab>"
+        execute s:GetUndojoinStr()."normal! ".insCmd."\<Tab>"
         normal! l
-        execute 'startinsert'.(cursorPos == len(line) ? '!' : '')
+        execute s:GetUndojoinStr().'startinsert'.(cursorPos == len(line) ? '!' : '')
     else
         let isWhitespaceLine = match(line, '\v\S') == -1
         if (!isWhitespaceLine) " if not whitespace line
-            execute "normal! ==\<esc>^"
+            execute s:GetUndojoinStr()."normal! ==\<esc>^"
             startinsert
         else
             let numOfTabs = neededIndent / &tabstop
-            execute "normal! \"_ddO\<esc>".numOfTabs."a\<Tab>"
+            execute s:GetUndojoinStr()."normal! \"_ddO\<esc>".numOfTabs."a\<Tab>"
             startinsert!
         endif
     endif
