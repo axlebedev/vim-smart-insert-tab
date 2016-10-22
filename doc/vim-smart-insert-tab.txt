@@ -20,7 +20,7 @@ INTRODUCTION                                        *smart-insert-tab-intro*
 vim-smart-insert-tab eliminates the need to press <Tab> several times.
 
 By VIM's default: user has to press <Tab> several times to reach
-necessary indentation (or use `cc` of course).
+necessary indentation (or use `cc`).
 
 With this plugin, in insert mode: when user presses <Tab> at empty line
 (or line that consists of whitespace symbols), necessary number of tabs
@@ -32,7 +32,7 @@ USAGE                                               *smart-insert-tab-usage*
 To make it work, map <Tab> key: >
   inoremap <Tab> <Esc>:call SmartInsertTab()<CR>
 <
-To make it work correctly, don't forget about other plugins that use <Tab>.
+Don't forget about other plugins that use <Tab>.
 e.g. with neocomplete: >
   inoremap <expr><TAB> pumvisible() ?
     \ "\<C-n>" : "\<Esc>:call SmartInsertTab()\<cr>"
@@ -42,7 +42,9 @@ BUGS                                                 *smart-insert-tab-bugs*
 
 Known bugs go here.
 
-* Incorrect work when insert from visual-block mode
+* <Tab> as last char of line
+* <Tab> in whitespace-only line
+* from visual-block mode
 
 ==============================================================================
 CONTRIBUTIONS                               *smart-insert-tab-contributions*
@@ -53,6 +55,8 @@ Contributions and pull requests are welcome.
 CHANGELOG                                       *smart-insert-tab-changelog*
 
 0.1.0 Basic functionality.
+0.1.1 fixed incorrect 'cindent()', fixed tabbing at empty line
+0.1.2 fixed insert tab at end of line
 
 ==============================================================================
 CREDITS                                           *smart-insert-tab-credits*
