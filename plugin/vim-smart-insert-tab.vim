@@ -40,22 +40,9 @@ function! SmartInsertTab()
 
     if (cursorPos >= neededIndent || indent('.') >= neededIndent || haveSymbolsBeforeCursor)
         " do nothing, default <Tab> char insert
-        call feedkeys("\<Tab>", 'n')
+        return "\<Tab>"
     else
         " process plugin work
-        let firstNonWhitespacePos = match(line, '\v\S')
-        if (firstNonWhitespacePos > -1) " if not whitespace line
-            " in this case - go to beginning of line and remove all existing
-            " starting spaces
-            call feedkeys( "\<Home>", 'n')
-            while (match(getline('.')[0], '\v\S') == -1)
-                call feedkeys( "\<Del>", 'n')
-            endwhile
-        endif
-
-        let numOfTabs = neededIndent / &tabstop
-        call feedkeys(s:MakeCmdString("\<Tab>", numOfTabs), 'n')
+        return "\<C-f>"
     endif
-
-    return ''
 endfunction

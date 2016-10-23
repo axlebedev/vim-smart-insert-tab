@@ -57,6 +57,7 @@ CHANGELOG                                       *smart-insert-tab-changelog*
 0.3.0: removed all funcs that are not permitted in Insert mode.
        Undo history works perfectly.
        Insert from visual-block works ok.
+0.3.1: fixed for python. Removed manual tabbing in favor of <C-f>
 
 ==============================================================================
 CONTRIBUTIONS                               *smart-insert-tab-contributions*
