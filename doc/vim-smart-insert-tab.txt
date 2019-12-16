@@ -35,7 +35,7 @@ To make it work, map <Tab> key: >
 Don't forget about other plugins that use <Tab>.
 e.g. with neocomplete: >
   inoremap <expr><TAB> pumvisible() ?
-    \ "\<C-n>" : "\<Esc>:call SmartInsertTab()\<cr>"
+    \ "\<C-n>" : "\<C-r>=SmartInsertTab()\<cr>"
 <
 ==============================================================================
 BUGS                                                 *smart-insert-tab-bugs*
