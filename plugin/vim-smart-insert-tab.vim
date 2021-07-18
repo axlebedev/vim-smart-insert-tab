@@ -24,7 +24,8 @@ function! SmartInsertTab()
     let cursorPos = s:GetCursorPosition()
 
     let haveSymbolsBeforeCursor = 
-\       cursorPos != 0 && match(line[:cursorPos - 1], '\v\S') > -1
+\       cursorPos != 0
+\    && match(line[:cursorPos - 2], '\v\S') > -1
 
     if (cursorPos >= neededIndent || indent('.') >= neededIndent || haveSymbolsBeforeCursor)
         " do nothing, default <Tab> char insert
