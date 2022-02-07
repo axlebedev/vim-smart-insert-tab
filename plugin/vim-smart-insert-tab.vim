@@ -11,20 +11,42 @@ function! s:GetCursorPosition()
 \     ])
 endfunction
 
+function! s:GetSymbolUnderCursor()
+    return matchstr(getline('.'), '\%'.(col('.') - 1).'c.')
+endfunction
+
+function! s:GetHaveSymbolsBeforeCursor()
+    return getline('.')[0:col('.') - 2] =~ '\S'
+endfunction
+
+function! s:GetHaveSymbolsAfterCursor()
+    return getline('.')[col('.'):] =~ '\S'
+endfunction
+
+
 function! SmartInsertTab()
     let line = getline('.')
     let neededIndent = cindent('.')
     let cursorPos = s:GetCursorPosition()
 
-    let haveSymbolsBeforeCursor = 
-\       cursorPos != 0
-\    && match(line[:cursorPos - 2], '\v\S') > -1
-
-    if (cursorPos >= neededIndent || indent('.') >= neededIndent || haveSymbolsBeforeCursor)
+    if (cursorPos >= neededIndent || indent('.') >= neededIndent || s:GetHaveSymbolsBeforeCursor())
         " do nothing, default <Tab> char insert
         return "\<Tab>"
-    else
-        " process plugin work
-        return "\<C-f>"
     endif
+
+    " process plugin work
+    return "\<C-f>"
+endfunction
+
+function! SmartInsertBackspace()
+    echom 'SmartInsertBackspace'
+    let line = getline('.')
+    let cursorPos = s:GetCursorPosition()
+
+    echom 's:GetSymbolUnderCursor()=['.s:GetSymbolUnderCursor().'] match='.(s:GetSymbolUnderCursor()=~'\s')
+    if (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
+        return "\<C-o>diw"
+    endif
+
+    return "\<BS>"
 endfunction
