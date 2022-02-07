@@ -3,19 +3,12 @@ if exists("g:loaded_vim_smart_insert_tab") || &cp || v:version < 700
 endif
 let g:loaded_vim_smart_insert_tab = 1
 
-" col('.') equal 1 in following cases:
-" - cursor stands at beginning of line
-"   (this func returns 0)
-" - cursor stands between first and second char in line 
-"   (this func returns 0, it's a bug)
-" - cursor stands on recently created line (with `cc` or `O`)
-"   (this func returns 1)
+" returns 0 if it is empty line
 function! s:GetCursorPosition()
-    let pos = col('.')
-    if (pos == 1)
-        return 0
-    endif
-    return pos
+    return min([
+\     col('.'),
+\     strwidth(getline('.'))
+\     ])
 endfunction
 
 function! SmartInsertTab()
