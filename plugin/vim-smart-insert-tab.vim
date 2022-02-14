@@ -39,11 +39,9 @@ function! SmartInsertTab()
 endfunction
 
 function! SmartInsertBackspace()
-    echom 'SmartInsertBackspace'
     let line = getline('.')
     let cursorPos = s:GetCursorPosition()
 
-    echom 's:GetSymbolUnderCursor()=['.s:GetSymbolUnderCursor().'] match='.(s:GetSymbolUnderCursor()=~'\s')
     if (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
         return "\<C-o>diw"
     endif
