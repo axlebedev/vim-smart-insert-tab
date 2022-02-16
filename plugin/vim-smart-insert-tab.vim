@@ -3,8 +3,9 @@ if exists("g:loaded_vim_smart_insert_tab") || &cp || v:version < 700
 endif
 let g:loaded_vim_smart_insert_tab = 1
 
-let s:smartInsertTabFallback = get(g:, 'smartInsertTabFallback', 'undefined')
-let s:smartInsertTabBackspaceFallback = get(g:, 'smartInsertTabBackspaceFallback', 'undefined')
+let s:undefined = 'undefined'
+let s:smartInsertTabFallback = get(g:, 'smartInsertTabFallback', s:undefined)
+let s:smartInsertBackspaceFallback = get(g:, 'smartInsertBackspaceFallback', s:undefined)
 
 " returns 0 if it is empty line
 function! s:GetCursorPosition()
@@ -37,7 +38,7 @@ function! SmartInsertTab()
         return "\<C-f>"
     endif
 
-    if (s:smartInsertTabFallback != 'undefined')
+    if (s:smartInsertTabFallback != s:undefined)
         return function(s:smartInsertTabFallback)()
     endif
 
@@ -54,8 +55,8 @@ function! SmartInsertBackspace()
         return "\<C-o>diw"
     endif
 
-    if (s:smartInsertTabBackspaceFallback != 'undefined')
-        return function(s:smartInsertTabBackspaceFallback)()
+    if (s:smartInsertBackspaceFallback != s:undefined)
+        return function(s:smartInsertBackspaceFallback)()
     endif
 
     " do nothing, default <BS> char insert
