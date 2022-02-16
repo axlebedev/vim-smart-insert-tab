@@ -32,13 +32,17 @@ function! SmartInsertTab()
     let neededIndent = cindent('.')
     let cursorPos = s:GetCursorPosition()
 
-    if (cursorPos >= neededIndent || indent('.') >= neededIndent || s:GetHaveSymbolsBeforeCursor())
-        " do nothing, default <Tab> char insert
-        return "\<Tab>"
+    if (cursorPos < neededIndent && indent('.') < neededIndent && !s:GetHaveSymbolsBeforeCursor())
+        " process plugin work
+        return "\<C-f>"
     endif
 
-    " process plugin work
-    return "\<C-f>"
+    if (s:smartInsertTabFallback != 'undefined')
+        return function(s:smartInsertTabFallback)()
+    endif
+
+    " do nothing, default <Tab> char insert
+    return "\<Tab>"
 endfunction
 
 function! SmartInsertBackspace()
@@ -46,6 +50,7 @@ function! SmartInsertBackspace()
     let cursorPos = s:GetCursorPosition()
 
     if (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
+        " process plugin work
         return "\<C-o>diw"
     endif
 
@@ -53,5 +58,6 @@ function! SmartInsertBackspace()
         return function(s:smartInsertTabBackspaceFallback)()
     endif
 
+    " do nothing, default <BS> char insert
     return "\<BS>"
 endfunction
