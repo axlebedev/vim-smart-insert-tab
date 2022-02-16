@@ -15,6 +15,10 @@ function! s:GetCursorPosition()
 \     ])
 endfunction
 
+function! s:GetCurrentLineIsWhitespace()
+    return getline('.') =~ '\v^\s+$'
+endfunction
+
 function! s:GetSymbolUnderCursor()
     return matchstr(getline('.'), '\%'.(col('.') - 1).'c.')
 endfunction
@@ -49,6 +53,11 @@ endfunction
 function! SmartInsertBackspace()
     let line = getline('.')
     let cursorPos = s:GetCursorPosition()
+
+    if (s:GetCurrentLineIsWhitespace())
+        " process plugin work
+        return "\<C-o>d0"
+    endif
 
     if (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
         " process plugin work
