@@ -39,7 +39,8 @@ function! SmartInsertTab()
 
     if (cursorPos < neededIndent && indent('.') < neededIndent && !s:GetHaveSymbolsBeforeCursor())
         " process plugin work
-        return "\<C-f>"
+        call feedkeys("\<C-o>==\<C-o>I", 'n')
+        return ""
     endif
 
     if (s:smartInsertTabFallback != s:undefined)
