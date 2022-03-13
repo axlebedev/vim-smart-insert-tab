@@ -79,12 +79,15 @@ function! SmartInsertBackspace()
 
     if (s:GetCurrentLineIsWhitespace())
         if (cursorPos > line->len()) " if cursor is at last column of line
+            undojoin
             return "\<C-o>0d$"
         endif
         " process plugin work
+        undojoin
         return "\<C-o>d0"
     elseif (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
         " process plugin work
+        undojoin
         return "\<C-o>diw"
     endif
 
