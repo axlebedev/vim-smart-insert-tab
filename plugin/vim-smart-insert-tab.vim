@@ -9,10 +9,11 @@ let s:smartInsertBackspaceFallback = get(g:, 'smartInsertBackspaceFallback', s:u
 
 " returns 0 if it is empty line
 function! s:GetCursorPosition()
-    return min([
-\     col('.'),
-\     strwidth(getline('.'))
-\     ])
+    if (strwidth(getline('.')) == 0)
+        return 0
+    endif
+
+    return col('.')
 endfunction
 
 function! s:GetCurrentLineIsWhitespace()
