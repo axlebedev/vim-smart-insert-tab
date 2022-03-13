@@ -32,6 +32,25 @@ function! s:GetHaveSymbolsAfterCursor()
     return getline('.')[col('.'):] =~ '\S'
 endfunction
 
+let s:emptyArrayLengthCache = s:undefined
+let s:emptyArrayCache = s:undefined
+
+function! s:GetEmptyArray(length) abort
+    if (a:length == s:emptyArrayLengthCache)
+        return s:emptyArrayCache
+    endif
+
+    let result = []
+    let i = 0
+    while i < a:length
+        call add(result, '')
+        let i = i + 1
+    endwhile
+
+    let s:emptyArrayLengthCache = a:length
+    let s:emptyArrayCache = result
+    return result
+endfunction
 
 function! SmartInsertTab()
     let line = getline('.')
@@ -40,7 +59,9 @@ function! SmartInsertTab()
 
     if (cursorPos < neededIndent && indent('.') < neededIndent && !s:GetHaveSymbolsBeforeCursor())
         " process plugin work
-        call feedkeys("\<C-o>==\<C-o>I", 'n')
+        undojoin | call setline(line('.'), '')
+        undojoin | call feedkeys(join(s:GetEmptyArray(neededIndent + 1), ' '), 'n')
+
         return ""
     endif
 
