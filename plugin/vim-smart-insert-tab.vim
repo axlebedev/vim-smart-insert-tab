@@ -57,11 +57,12 @@ function! SmartInsertBackspace()
     let cursorPos = s:GetCursorPosition()
 
     if (s:GetCurrentLineIsWhitespace())
+        if (cursorPos > line->len()) " if cursor is at last column of line
+            return "\<C-o>0d$"
+        endif
         " process plugin work
         return "\<C-o>d0"
-    endif
-
-    if (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
+    elseif (!s:GetHaveSymbolsAfterCursor() && s:GetSymbolUnderCursor() =~ '\s')
         " process plugin work
         return "\<C-o>diw"
     endif
